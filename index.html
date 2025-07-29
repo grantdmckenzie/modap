@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MTQP3RLKNR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-MTQP3RLKNR');
+</script>
+
+	<base target="_top">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<title>MODAP: Micromobility Open Data & Analytics Platform</title>
+
+	<!-- Primary Meta Tags -->
+	<meta name="title" content="MODAP: Micromobility Open Data & Analytics Platform">
+	<meta name="description" content="MODAP is an open-source geovisual analytics platform offering access to over 20 million micromobility trips across five global cities, empowering researchers, planners, and the public to explore and analyze e-scooter and e-bike travel data.">
+
+	<!-- Open Graph / Facebook -->
+	<meta property="og:type" content="website">
+	<meta property="og:url" content="https://platial.science/modap">
+	<meta property="og:title" content="MODAP: Micromobility Open Data & Analytics Platform">
+	<meta property="og:description" content="MODAP is an open-source geovisual analytics platform offering access to over 20 million micromobility trips across five global cities, empowering researchers, planners, and the public to explore and analyze e-scooter and e-bike travel data.">
+	<meta property="og:image" content="https://platial.science/modap/teaser.png">
+
+	<!-- Twitter -->
+	<meta property="twitter:card" content="summary_large_image">
+	<meta property="twitter:url" content="https://platial.science/modap">
+	<meta property="twitter:title" content="MODAP: Micromobility Open Data & Analytics Platform">
+	<meta property="twitter:description" content="MODAP is an open-source geovisual analytics platform offering access to over 20 million micromobility trips across five global cities, empowering researchers, planners, and the public to explore and analyze e-scooter and e-bike travel data.">
+	<meta property="twitter:image" content="https://platial.science/modap/teaser.png">
+
+	<link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
+
+    <link rel="stylesheet" href="css/leaflet.css?pub" />
+    <link rel="stylesheet" href="css/main.css?pub"> 
+    <link rel="stylesheet" href="css/controls.css?pub"> 
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200;300&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Dosis:wght@200&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Rubik+Distressed&family=Rubik+Glitch&family=Rubik+Iso&family=Zeyada&display=swap" rel="stylesheet">
+
+    <script src="js/leaflet.js"></script>
+    <script src="js/leaflet.ajax.min.js"></script>
+	<script src="js/Chart.js"></script>
+
+	
+</head>
+<body>
+<div id="map"></div>
+<a style='position:absolute;z-index:500;right:610px;bottom:20px;' href="https://platial.science" target="_blank"><img src="img/platial.png"/></a>
+<a href="mailto:grant.mckenzie@mcgill.ca?subject=MODAP Feedback"><img src="img/beta.png" style='position:absolute;z-index:1000;top:10px;right:660px;width:60px' title="This platform is still in beta testing. Click to provide feedback." /></a>
+<div id="sidepanel">
+	<div id="title">
+		<div style='float:left;width:57%'>
+			<h1>MODAP</h1>
+		</div>
+		<div style='float:left;width:43%;margin-top:15px;text-align: left;'>
+			<h2 style='color:#888'>Micromobility Open Data<br/>& Analytics Platform</h2>
+		</div>
+	</div>
+	<div id='config'>
+		<div class="dropdown big">
+		  <button class="dropbtn big" id='cityname'>Select a city</button>
+		  <div id="citydd" class="dropdown-content big"></div>
+		</div>
+		<div class="dropdown">
+		  <button class="dropbtn" id='resolutionname' style='display:none'>Geography</button>
+		  <div id="resolutiondd" class="dropdown-content"></div>
+		</div>
+		<div class="dropdown">
+		  <button class="dropbtn" id='odname' style='display:none'>Origin / Destination</button>
+		  <div id="oddd" class="dropdown-content"></div>
+		</div>
+		<div class="dropdown">
+		  <button class="dropbtn" id='vehicletype' style='display:none'>Vehicle Type</button>
+		  <div id="vehicledd" class="dropdown-content"></div>
+		</div>
+	</div>
+	<!-- <div class='description'>Welcome to the micromobility travel times visual analytics and data downloading platform. Select a city and resolution from the drop down menus above along with origins or destinations.  The plots below show 1. Percentage of trips by hour of the day and split by weekdays and weekends and 2. A histogram of travel times.  Select a region on the map to view information specific to that region.  These data are sampled from the publicly available API offered by <span id='operator' style='font-style:italic'></span> between <span id='dates'></span>. </div> -->
+	<div id="stats">
+		<div id="stats_trips" class='bignums'></div>
+		<div id="stats_median" class='bignums'></div>
+		<div id="triplabel" class='labels'>Trips</div>
+		<div class='labels'>Average Duration</div>
+		<div id="stats_dynamic"></div>
+	</div>
+	<div id="plots">
+		<canvas id="tempchart"></canvas>
+		<canvas id="durationchart"></canvas>
+	</div>
+	<div id="download_wrapper">
+		<div id="download">Download Data</div>
+		<div id="source">Source Information</div>
+	</div>
+	<div class='description' style='text-align:center'><a href="https://platial.science" target="_blank">More information on the platform available here.</a><br/><br/> &copy;2025 Platial Analysis Lab. </div>
+</div>
+<div id='legend'></div>
+<div id="dialog">
+	<div id='dialog-title'>Download Data</div>
+	<div id='dialog-close' title='Close Dialog'></div>
+	<div id='dialog-content'>
+		Check back later.  Download functionality should be available shortly.
+	</div>
+</div>
+<div id="dialog-wrapper"></div>
+
+<script src="js/main.js"></script>
+<script src="js/controls.js"></script>
+<script src="js/map.js?pub"></script>
+
+<script src="js/charts.js?pub"></script>
+
+</body>
+</html>
